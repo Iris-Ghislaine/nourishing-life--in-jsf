@@ -1,0 +1,111 @@
+<ui:composition template="/template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:define name="content">
+    <f:metadata>
+        <f:viewAction action="#{settingsBean.init}"/>
+    </f:metadata>
+
+    <section class="nl-section" style="max-width:640px; margin:0 auto;">
+        <h1 style="color:#4F6B1C;">Settings</h1>
+
+        <!-- Single shared messages area: globalOnly messages get rendered by EVERY
+             h:messages on the resulting page (each of these forms causes a full
+             postback of the whole view), so only one instance may exist here. -->
+        <h:messages globalOnly="true" infoClass="nl-messages-info" errorClass="nl-messages-error" layout="table"/>
+
+        <div class="nl-panel">
+            <h2>Profile</h2>
+            <h:form id="profileForm">
+                <div class="nl-field">
+                    <h:outputLabel for="editName" value="Full Name"/>
+                    <h:inputText id="editName" value="#{settingsBean.editName}" required="true" styleClass="nl-input">
+                        <f:validateLength minimum="2" maximum="100"/>
+                    </h:inputText>
+                    <h:message for="editName" styleClass="nl-error"/>
+                </div>
+                <div class="nl-field">
+                    <h:outputLabel value="Email (cannot be changed)"/>
+                    <h:outputText value="#{authBean.currentUser.email}" styleClass="nl-input nl-input-disabled"/>
+                </div>
+                <div class="nl-field">
+                    <h:outputLabel for="editPhone" value="Phone Number"/>
+                    <h:inputText id="editPhone" value="#{settingsBean.editPhone}" styleClass="nl-input">
+                        <f:validator validatorId="phoneNumberValidator"/>
+                    </h:inputText>
+                    <h:message for="editPhone" styleClass="nl-error"/>
+                </div>
+                <h:commandButton value="Save Changes" action="#{settingsBean.saveProfile}" styleClass="nl-btn nl-btn-primary"/>
+            </h:form>
+        </div>
+
+        <div class="nl-panel">
+            <h2>Appearance</h2>
+            <h:form>
+                <div class="nl-toggle-row">
+                    <p style="margin:0;">Current mode: <strong>#{authBean.currentUser.darkMode ? 'Dark' : 'Light'}</strong></p>
+                    <h:commandLink action="#{settingsBean.toggleDarkMode}"
+                                    styleClass="nl-toggle #{authBean.currentUser.darkMode ? 'nl-toggle-on' : ''}">
+                        <span class="nl-toggle-knob"/>
+                    </h:commandLink>
+                </div>
+            </h:form>
+        </div>
+
+        <div class="nl-panel">
+            <h2>Notifications</h2>
+            <h:form>
+                <div class="nl-toggle-row">
+                    <p style="margin:0;">Notifications: <strong>#{authBean.currentUser.notificationsEnabled ? 'Enabled' : 'Disabled'}</strong></p>
+                    <h:commandLink action="#{settingsBean.toggleNotifications}"
+                                    styleClass="nl-toggle #{authBean.currentUser.notificationsEnabled ? 'nl-toggle-on' : ''}">
+                        <span class="nl-toggle-knob"/>
+                    </h:commandLink>
+                </div>
+
+                <h:panelGroup rendered="#{authBean.currentUser.notificationsEnabled}">
+                    <div class="nl-toggle-row" style="margin-top:1rem;">
+                        <p style="margin:0;">Medicine reminder: <strong>#{authBean.currentUser.medicineReminder ? 'On' : 'Off'}</strong></p>
+                        <h:commandLink action="#{settingsBean.toggleMedicineReminder}"
+                                        styleClass="nl-toggle #{authBean.currentUser.medicineReminder ? 'nl-toggle-on' : ''}">
+                            <span class="nl-toggle-knob"/>
+                        </h:commandLink>
+                    </div>
+
+                    <h:panelGroup rendered="#{authBean.currentUser.medicineReminder}">
+                        <div class="nl-field" style="margin-top:1rem;">
+                            <h:outputLabel for="reminderTime" value="Reminder Time"/>
+                            <h:inputText id="reminderTime" value="#{authBean.currentUser.reminderTime}" styleClass="nl-input" style="max-width:150px;"/>
+                            <h:commandButton value="Save Time" action="#{settingsBean.saveReminderTime}" styleClass="nl-btn nl-btn-primary" style="margin-top:0.5rem;"/>
+                        </div>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </h:form>
+        </div>
+
+        <div class="nl-panel">
+            <h2>Security</h2>
+            <h:form id="passwordForm">
+                <div class="nl-field">
+                    <h:outputLabel for="newPassword" value="New Password"/>
+                    <h:inputSecret id="newPassword" value="#{settingsBean.newPassword}" styleClass="nl-input"/>
+                </div>
+                <div class="nl-field">
+                    <h:outputLabel for="confirmNewPassword" value="Confirm New Password"/>
+                    <h:inputSecret id="confirmNewPassword" value="#{settingsBean.confirmNewPassword}" styleClass="nl-input"/>
+                </div>
+                <h:commandButton value="Change Password" action="#{settingsBean.changePassword}" styleClass="nl-btn" style="background-color:#4F6B1C; color:white;"/>
+            </h:form>
+        </div>
+
+        <div class="nl-panel">
+            <h:form>
+                <h:commandButton value="Sign Out" action="#{authBean.logout}" styleClass="nl-btn" style="background-color:#EF4444; color:white; width:100%;"/>
+            </h:form>
+        </div>
+    </section>
+
+</ui:define>
+</ui:composition>
