@@ -1,0 +1,55 @@
+<ui:composition template="/template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:define name="content">
+
+    <section class="nl-section" style="max-width:640px; margin:0 auto;">
+        <h1 style="color:#4F6B1C; text-align:center;">Rate Your Experience</h1>
+        <p class="nl-muted" style="text-align:center;">We'd love to hear your feedback!</p>
+
+        <div class="nl-panel">
+            <h:panelGroup rendered="#{feedbackBean.submitted}">
+                <div style="text-align:center; padding:2rem 0;">
+                    <span style="font-size:3rem;">✅</span>
+                    <h2 style="color:#4F6B1C;">Thank You!</h2>
+                    <p>Your feedback has been submitted successfully.</p>
+                </div>
+            </h:panelGroup>
+
+            <h:form id="ratingForm" rendered="#{not feedbackBean.submitted}">
+                <h:messages globalOnly="true" styleClass="nl-messages" layout="table"/>
+
+                <div class="nl-field">
+                    <label>How would you rate Nourishing Life?</label>
+                    <div class="nl-star-row">
+                        <ui:repeat value="#{[1,2,3,4,5]}" var="star">
+                            <h:commandLink action="#{feedbackBean.setRating(star)}" styleClass="nl-star"
+                                           style="color:#{star le feedbackBean.rating ? '#C7C79A' : '#D1D5DB'};">
+                                <h:outputText value="★"/>
+                            </h:commandLink>
+                        </ui:repeat>
+                    </div>
+                    <p style="text-align:center; color:#8FC043; font-weight:600;">
+                        <h:outputText value="#{feedbackBean.rating} star(s) selected" rendered="#{feedbackBean.rating gt 0}"/>
+                    </p>
+                </div>
+
+                <div class="nl-field">
+                    <h:outputLabel for="message" value="Additional Comments (Optional)"/>
+                    <!-- JSF standard validator: f:validateLength (type 1 of 3) -->
+                    <h:inputTextarea id="message" value="#{feedbackBean.message}" rows="5" styleClass="nl-input">
+                        <f:validateLength maximum="1000"/>
+                    </h:inputTextarea>
+                    <h:message for="message" styleClass="nl-error"/>
+                </div>
+
+                <h:commandButton value="Submit Feedback" action="#{feedbackBean.submitFeedback}"
+                                  styleClass="nl-btn nl-btn-primary" style="width:100%; background-color:#E37522;"/>
+            </h:form>
+        </div>
+    </section>
+
+</ui:define>
+</ui:composition>
