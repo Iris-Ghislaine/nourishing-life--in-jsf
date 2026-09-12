@@ -1,0 +1,201 @@
+/* External stylesheet (type 1 of 3 required CSS types) - base layout, nav, forms, cards, dark mode */
+
+:root {
+    --nl-green: #4F6B1C;
+    --nl-lime: #8FC043;
+    --nl-orange: #E37522;
+    --nl-sand: #C7C79A;
+    --nl-bg: #FFFBF5;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    background: var(--nl-bg);
+    color: #1F2937;
+}
+
+body.dark {
+    background: #111827;
+    color: #F3F4F6;
+}
+
+.nl-header {
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+body.dark .nl-header { background: #1F2937; }
+
+.nl-header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.nl-brand {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--nl-green);
+    text-decoration: none;
+}
+body.dark .nl-brand { color: #A7D97A; }
+
+.nl-nav { display: flex; align-items: center; gap: 1.1rem; flex-wrap: wrap; }
+.nl-nav-link { text-decoration: none; color: #374151; font-weight: 500; }
+body.dark .nl-nav-link { color: #D1D5DB; }
+.nl-nav-link:hover { color: var(--nl-orange); }
+.nl-nav-admin { color: var(--nl-orange); font-weight: 700; }
+.nl-nav-user { display: flex; align-items: center; gap: 0.6rem; margin-left: 0.5rem; }
+
+.nl-main { max-width: 1100px; margin: 0 auto; padding: 1.5rem; min-height: 60vh; }
+
+.nl-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #9CA3AF;
+    font-size: 0.85rem;
+}
+
+.nl-hero {
+    text-align: center;
+    padding: 4rem 1rem;
+    background:
+        linear-gradient(135deg, rgba(31, 24, 10, 0.72) 0%, rgba(17, 24, 39, 0.55) 100%),
+        url("/resources/images/hero-food.jpg") center / cover no-repeat;
+    border-radius: 24px;
+    margin-bottom: 2rem;
+}
+.nl-hero h1 { color: #FFFFFF; font-size: 2.5rem; margin-bottom: 0.5rem; text-shadow: 0 2px 8px rgba(0,0,0,0.45); }
+.nl-hero p { color: #F3F4F6; text-shadow: 0 1px 6px rgba(0,0,0,0.45); }
+
+.nl-hero-about {
+    background:
+        linear-gradient(135deg, rgba(31, 24, 10, 0.72) 0%, rgba(17, 24, 39, 0.55) 100%),
+        url("/resources/images/ingredients.jpg") center / cover no-repeat;
+}
+
+.nl-section { margin: 2rem 0; }
+
+.nl-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+.nl-disease-card, .nl-meal-card, .nl-info-card, .nl-panel {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+}
+body.dark .nl-disease-card, body.dark .nl-meal-card, body.dark .nl-info-card, body.dark .nl-panel {
+    background: #1F2937;
+}
+
+.nl-disease-card { color: #fff; text-decoration: none; display: block; transition: transform 0.2s; }
+.nl-disease-card:hover { transform: translateY(-4px); }
+.nl-disease-icon { font-size: 2.2rem; display: block; }
+.nl-disease-name { font-size: 1.3rem; font-weight: 700; display: block; margin: 0.4rem 0; }
+.nl-disease-desc { opacity: 0.9; }
+
+.nl-did-you-know { background: #FEF3C7; border-radius: 16px; padding: 1.25rem; margin-top: 1rem; }
+body.dark .nl-did-you-know { background: #374151; }
+
+.nl-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.nl-tab { padding: 0.5rem 1rem; border-radius: 999px; background: #F3F4F6; text-decoration: none; color: #374151; cursor: pointer; border: none; font-weight: 600; }
+.nl-tab-active { background: var(--nl-orange); color: #fff; }
+body.dark .nl-tab { background: #374151; color: #E5E7EB; }
+
+.nl-meal-nutrients { display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.85rem; margin: 0.5rem 0; }
+
+.nl-panel { margin: 1.5rem 0; }
+.nl-panel h2 { color: var(--nl-green); margin-top: 0; }
+body.dark .nl-panel h2 { color: #A7D97A; }
+
+.nl-auth-page { display: flex; justify-content: center; padding: 2rem 1rem; }
+.nl-auth-card { background: #fff; border-radius: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); padding: 2.5rem; max-width: 420px; width: 100%; }
+body.dark .nl-auth-card { background: #1F2937; }
+
+.nl-field { margin-bottom: 1.1rem; display: flex; flex-direction: column; gap: 0.35rem; }
+.nl-form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.nl-form-row .nl-field { flex: 1; min-width: 160px; }
+
+.nl-input {
+    padding: 0.65rem 0.9rem;
+    border-radius: 12px;
+    border: 1px solid #D1D5DB;
+    font-size: 1rem;
+    width: 100%;
+}
+.nl-input-disabled { background: #F3F4F6; color: #6B7280; }
+body.dark .nl-input { background: #374151; border-color: #4B5563; color: #F3F4F6; }
+
+.nl-btn {
+    padding: 0.65rem 1.4rem;
+    border-radius: 12px;
+    border: none;
+    background: #E5E7EB;
+    color: #374151;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+.nl-btn-primary { background: var(--nl-lime); color: #fff; }
+.nl-btn-danger { background: #FEE2E2; color: #B91C1C; }
+
+.nl-error { color: #DC2626; font-size: 0.85rem; }
+.nl-muted { color: #6B7280; }
+body.dark .nl-muted { color: #9CA3AF; }
+.nl-messages { color: #DC2626; }
+.nl-messages-info { color: #15803D; font-weight: 600; }
+.nl-messages-error { color: #DC2626; font-weight: 600; }
+
+/* Toggle switch (type: inline CSS state via conditional styleClass, base rules external) */
+.nl-toggle {
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    border-radius: 999px;
+    background: #D1D5DB;
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.25s ease;
+}
+.nl-toggle-on { background: var(--nl-lime); }
+.nl-toggle-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    transition: left 0.25s ease;
+}
+.nl-toggle-on .nl-toggle-knob { left: 27px; }
+.nl-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+
+.nl-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.nl-table th, .nl-table td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid #E5E7EB; }
+body.dark .nl-table th, body.dark .nl-table td { border-color: #374151; }
+
+.nl-star-row { display: flex; justify-content: center; gap: 0.5rem; font-size: 2.4rem; }
+.nl-star { text-decoration: none; }
+
+.nl-accordion-item { border-bottom: 1px solid #E5E7EB; padding: 0.75rem 0; }
+.nl-accordion-header { font-weight: 600; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+.nl-accordion-body { padding-top: 0.5rem; color: #4B5563; }
+body.dark .nl-accordion-body { color: #D1D5DB; }

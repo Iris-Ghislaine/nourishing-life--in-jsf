@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+    <title>Nourishing Life</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- External CSS (type 1 of 3 required CSS types) -->
+    <h:outputStylesheet library="css" name="styles.css"/>
+    <ui:insert name="head-extra"/>
+</h:head>
+<h:body styleClass="#{authBean.currentUser != null and authBean.currentUser.darkMode ? 'dark' : ''}">
+
+    <header class="nl-header">
+        <div class="nl-header-inner">
+            <h:link value="🥗 Nourishing Life" styleClass="nl-brand" outcome="/home.xhtml"/>
+
+            <nav class="nl-nav">
+                <ui:fragment rendered="#{authBean.authenticated}">
+                    <h:link value="Home" outcome="/home.xhtml" styleClass="nl-nav-link"/>
+                    <h:link value="About" outcome="/about.xhtml" styleClass="nl-nav-link"/>
+                    <h:link value="FAQ" outcome="/faq.xhtml" styleClass="nl-nav-link"/>
+                    <h:link value="Rate Us" outcome="/rating.xhtml" styleClass="nl-nav-link"/>
+                    <h:link value="Settings" outcome="/settings.xhtml" styleClass="nl-nav-link"/>
+                    <ui:fragment rendered="#{authBean.admin}">
+                        <h:link value="Dashboard" outcome="/admin/dashboard.xhtml" styleClass="nl-nav-link nl-nav-admin"/>
+                    </ui:fragment>
+                    <span class="nl-nav-user">
+                        Hi, #{authBean.currentUser.name}
+                        <h:form>
+                            <h:commandLink value="Logout" action="#{authBean.logout}" styleClass="nl-nav-link"/>
+                        </h:form>
+                    </span>
+                </ui:fragment>
+            </nav>
+        </div>
+    </header>
+
+    <main class="nl-main">
+        <ui:insert name="content"/>
+    </main>
+
+    <footer class="nl-footer">
+        <p>© 2026 Nourishing Life &#8212; nutrition guidance for chronic disease management.</p>
+    </footer>
+
+</h:body>
+</html>
