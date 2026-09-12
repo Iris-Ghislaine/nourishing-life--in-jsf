@@ -1,0 +1,78 @@
+<ui:composition template="/template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:define name="content">
+    <f:metadata>
+        <f:viewParam name="diseaseId" value="#{diseaseBean.diseaseId}"/>
+        <f:viewAction action="#{diseaseBean.init}"/>
+    </f:metadata>
+
+    <h:panelGroup rendered="#{diseaseBean.disease == null}">
+        <p>Disease not found. <h:link value="Go home" outcome="/home.xhtml"/></p>
+    </h:panelGroup>
+
+    <h:panelGroup rendered="#{diseaseBean.disease != null}">
+        <section class="nl-section">
+            <h1 style="color:#4F6B1C;">
+                <h:outputText value="#{diseaseBean.disease.icon} #{diseaseBean.disease.name}"/>
+            </h1>
+            <p class="nl-muted">#{diseaseBean.disease.description}</p>
+
+            <div class="nl-did-you-know">
+                <h3>💡 Did You Know?</h3>
+                <ul>
+                    <ui:repeat value="#{diseaseBean.disease.didYouKnow}" var="fact">
+                        <li>#{fact}</li>
+                    </ui:repeat>
+                </ul>
+            </div>
+        </section>
+
+        <section class="nl-section">
+            <h:form id="categoryForm">
+                <div class="nl-tabs">
+                    <ui:repeat value="#{diseaseBean.categories}" var="cat">
+                        <h:commandLink styleClass="nl-tab #{diseaseBean.selectedCategory eq cat ? 'nl-tab-active' : ''}"
+                                       action="#{diseaseBean.selectCategory(cat)}">
+                            <h:outputText value="#{cat.label}"/>
+                        </h:commandLink>
+                    </ui:repeat>
+                </div>
+            </h:form>
+
+            <div class="nl-card-grid">
+                <ui:repeat value="#{diseaseBean.mealsForSelectedCategory}" var="meal">
+                    <div class="nl-meal-card">
+                        <h4>#{meal.name}</h4>
+                        <p class="nl-muted">#{meal.description}</p>
+                        <div class="nl-meal-nutrients">
+                            <span>🔥 #{meal.nutrients.calories}</span>
+                            <span>💪 #{meal.nutrients.protein} protein</span>
+                            <span>🌾 #{meal.nutrients.carbs} carbs</span>
+                            <span>🥑 #{meal.nutrients.fats} fats</span>
+                        </div>
+                        <details>
+                            <summary>Preparation &amp; benefits</summary>
+                            <strong>Steps:</strong>
+                            <ol>
+                                <ui:repeat value="#{meal.preparationSteps}" var="step">
+                                    <li>#{step}</li>
+                                </ui:repeat>
+                            </ol>
+                            <strong>Benefits:</strong>
+                            <ul>
+                                <ui:repeat value="#{meal.benefits}" var="benefit">
+                                    <li>#{benefit}</li>
+                                </ui:repeat>
+                            </ul>
+                        </details>
+                    </div>
+                </ui:repeat>
+            </div>
+        </section>
+    </h:panelGroup>
+
+</ui:define>
+</ui:composition>
