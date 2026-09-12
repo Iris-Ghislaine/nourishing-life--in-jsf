@@ -1,0 +1,35 @@
+<ui:composition template="/template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:define name="content">
+    <f:metadata>
+        <f:viewAction action="#{faqBean.init}"/>
+    </f:metadata>
+
+    <section class="nl-section" style="max-width:720px; margin:0 auto;">
+        <h1 style="color:#4F6B1C;">Frequently Asked Questions</h1>
+
+        <h:panelGroup rendered="#{empty faqBean.faqs}">
+            <p class="nl-muted">No FAQs yet. Questions answered by the admin will appear here.</p>
+        </h:panelGroup>
+
+        <h:form>
+            <div class="nl-accordion">
+                <ui:repeat value="#{faqBean.faqs}" var="faq">
+                    <div class="nl-accordion-item">
+                        <h:commandLink styleClass="nl-accordion-header" action="#{faqBean.toggle(faq.id)}">
+                            <h:outputText value="#{faq.question}"/>
+                        </h:commandLink>
+                        <div class="nl-accordion-body" style="#{faqBean.isOpen(faq.id) ? 'display:block;' : 'display:none;'}">
+                            #{faq.answer}
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </h:form>
+    </section>
+
+</ui:define>
+</ui:composition>
