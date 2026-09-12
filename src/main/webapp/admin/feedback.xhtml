@@ -1,0 +1,77 @@
+<ui:composition template="/template.xhtml"
+                 xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:f="http://xmlns.jcp.org/jsf/core"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:define name="content">
+    <f:metadata>
+        <f:viewAction action="#{feedbackBean.init}"/>
+    </f:metadata>
+
+    <h1 style="color:#4F6B1C;">Manage Feedback</h1>
+    <p><h:link value="&#8592; Back to Dashboard" outcome="/admin/dashboard.xhtml"/></p>
+
+    <h:panelGroup rendered="#{empty feedbackBean.allFeedback}">
+        <p class="nl-muted">No feedback submitted yet.</p>
+    </h:panelGroup>
+
+    <ui:repeat value="#{feedbackBean.allFeedback}" var="fb">
+        <div class="nl-panel" style="margin-bottom:1rem;">
+
+            <ui:fragment rendered="#{feedbackBean.editingFeedback == null or feedbackBean.editingFeedback.id ne fb.id}">
+                <div style="display:flex; justify-content:space-between;">
+                    <strong>#{fb.user.name}</strong>
+                    <span style="padding:0.15rem 0.6rem; border-radius:8px; font-size:0.8rem; background-color:#{fb.status eq 'PENDING' ? '#FEF3C7' : '#D1FAE5'}; color:#{fb.status eq 'PENDING' ? '#92400E' : '#065F46'};">
+                        #{fb.status}
+                    </span>
+                </div>
+                <p>Rating: <h:outputText value="#{fb.rating}"/> / 5</p>
+                <p>#{fb.message}</p>
+
+                <h:panelGroup rendered="#{fb.adminReply != null}">
+                    <div class="nl-panel" style="background-color:#EFF6FF;">
+                        <strong>Admin Reply:</strong> #{fb.adminReply}
+                    </div>
+                </h:panelGroup>
+
+                <h:form rendered="#{fb.status eq 'PENDING'}">
+                    <ui:fragment rendered="#{feedbackBean.replyTarget == null or feedbackBean.replyTarget.id ne fb.id}">
+                        <h:commandButton value="Reply" action="#{feedbackBean.startReply(fb)}" immediate="true" styleClass="nl-btn nl-btn-primary" style="margin-top:0.5rem;"/>
+                        <h:commandButton value="Delete" action="#{feedbackBean.delete(fb.id)}" styleClass="nl-btn nl-btn-danger" style="margin-top:0.5rem;"
+                                          onclick="return confirm('Delete this feedback entry?');"/>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{feedbackBean.replyTarget != null and feedbackBean.replyTarget.id eq fb.id}">
+                        <!-- Update: replying sets adminReply/status/repliedAt and auto-creates an FAQ -->
+                        <h:inputTextarea value="#{feedbackBean.replyTarget.draftReply}" rows="2" styleClass="nl-input"
+                                          placeholder="Type your reply..."/>
+                        <h:commandButton value="Send Reply" action="#{feedbackBean.reply}" styleClass="nl-btn nl-btn-primary" style="margin-top:0.5rem;"/>
+                        <h:commandButton value="Cancel" action="#{feedbackBean.cancelReply}" immediate="true" styleClass="nl-btn" style="margin-top:0.5rem;"/>
+                    </ui:fragment>
+                </h:form>
+                <h:form rendered="#{fb.status ne 'PENDING'}">
+                    <h:commandButton value="Edit" action="#{feedbackBean.startEdit(fb)}" styleClass="nl-btn" immediate="true" style="margin-top:0.5rem;"/>
+                    <h:commandButton value="Delete" action="#{feedbackBean.delete(fb.id)}" styleClass="nl-btn nl-btn-danger" style="margin-top:0.5rem;"
+                                      onclick="return confirm('Delete this feedback entry?');"/>
+                </h:form>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{feedbackBean.editingFeedback != null and feedbackBean.editingFeedback.id eq fb.id}">
+                <h:form>
+                    <div class="nl-field">
+                        <h:outputLabel value="Rating (1-5)"/>
+                        <h:inputText value="#{feedbackBean.editingFeedback.rating}" styleClass="nl-input" style="max-width:80px;"/>
+                    </div>
+                    <div class="nl-field">
+                        <h:outputLabel value="Message"/>
+                        <h:inputTextarea value="#{feedbackBean.editingFeedback.message}" rows="2" styleClass="nl-input"/>
+                    </div>
+                    <h:commandButton value="Save" action="#{feedbackBean.saveEdit}" styleClass="nl-btn nl-btn-primary"/>
+                    <h:commandButton value="Cancel" action="#{feedbackBean.cancelEdit}" styleClass="nl-btn" immediate="true"/>
+                </h:form>
+            </ui:fragment>
+
+        </div>
+    </ui:repeat>
+
+</ui:define>
+</ui:composition>
